@@ -21,6 +21,7 @@
         save: function (name, content) {
             let Message = AV.Object.extend('message');
             let message = new Message();
+        
             return message.save({
                 'content': content,
                 'name': name,
@@ -62,7 +63,6 @@
         },
         bindEvenets: function(){
             this.form.addEventListener('submit', function(e){
-                console.log(this);
                 e.preventDefault();
                 this.saveMessage();
             }.bind(this));
@@ -71,6 +71,10 @@
             let myForm = document.querySelector('#postMessageForm');
             let content = myForm.querySelector('input[name=content]').value;
             let name = myForm.querySelector('input[name=name]').value;
+            if(content===''||name===''){
+                alert('姓名或内容不能为空')
+                return
+            }
             this.model.save(name,content).then(function (object) {
                 let li = document.createElement('li');
                 li.innerText = `${object.attributes.name}: ${object.attributes.content}`;
